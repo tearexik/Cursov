@@ -1,0 +1,219 @@
+﻿<Window x:Class="Cursov.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cursov"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+   <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <local:GuideIdToLastNameConverter x:Key="GuideIdToLastNameConverter" />
+        <local:ClientListToLastNamesConverter x:Key="ClientListToLastNamesConverter" />
+    </Window.Resources>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Logout" Click="LogoutButton_Click"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="1" Margin="10" Visibility="Collapsed" x:Name="MainTabControl">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+
+            
+            <TabItem Header="Клієнти" x:Name="ClientsGrid" Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="5">
+                        <TextBlock Text="Пошук:" VerticalAlignment="Center" Margin="5"/>
+                        <TextBox x:Name="SearchTextBox" Margin="5" Width="200" TextChanged="SearchTextBox_TextChanged"/>
+                        <Button Content="Фільтри" Click="FiltersButton_Click" Margin="5"/>
+                        <Button x:Name="AddClientButton" Content="Додати" Click="AddClientButton_Click" Margin="5"/>
+                        <Button x:Name="EditClientButton" Content="Редагувати" Click="EditClientButton_Click" Margin="5"/>
+                        <Button x:Name="DelClientButton" Content="Видалити" Click="DelClientButton_Click" Margin="5"/>
+                        <Button x:Name="ClearFiltersButton" Content="Clear Filters" Click="ClearFiltersButton_Click" />
+                    </DockPanel>
+
+                    <TabControl Grid.Row="1" x:Name="clientTabControl" SelectionChanged="TabControl_SelectionChanged">
+                        <TabItem Header="Усі" x:Name="allTabItem">
+                            <TabItem.Content>
+                                <ListView ItemsSource="{Binding Client}" x:Name="clientList">
+                                    <ListView.View>
+                                        <GridView>
+
+                                            <GridViewColumn Header="Прізвище" DisplayMemberBinding="{Binding LastName}" Width="100"/>
+                                            <GridViewColumn Header="Ім'я" DisplayMemberBinding="{Binding FirstName}" Width="100"/>
+                                            <GridViewColumn Header="По-батькові" DisplayMemberBinding="{Binding Patronymic}" Width="100"/>
+                                            <GridViewColumn Header="Серія/номер паспорту" DisplayMemberBinding="{Binding Document}" Width="100"/>
+                                            <GridViewColumn Header="Дата нарождення" DisplayMemberBinding="{Binding Date}" Width="100"/>
+                                            <GridViewColumn Header="Місто" DisplayMemberBinding="{Binding Region}" Width="100"/>
+                                            <GridViewColumn Header="Загран. паспорт" DisplayMemberBinding="{Binding Pasport}" Width="100"/>
+                                            <GridViewColumn Header="Телефон" DisplayMemberBinding="{Binding Phone}" Width="100"/>
+                                            <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="100"/>
+                                            <GridViewColumn Header="VIP" DisplayMemberBinding="{Binding Vip}" Width="100"/>
+                                            <GridViewColumn Header="Вік" DisplayMemberBinding="{Binding Age}" Width="100"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </TabItem.Content>
+                        </TabItem>
+                        <TabItem Header="VIP" x:Name="vipTabItem">
+                            <TabItem.Content>
+                                <ListView ItemsSource="{Binding Client}" x:Name="clientVipList">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Прізвище" DisplayMemberBinding="{Binding LastName}" Width="100"/>
+                                            <GridViewColumn Header="Ім'я" DisplayMemberBinding="{Binding FirstName}" Width="100"/>
+                                            <GridViewColumn Header="По-батькові" DisplayMemberBinding="{Binding Patronymic}" Width="100"/>
+                                            <GridViewColumn Header="Серія/номер паспорту" DisplayMemberBinding="{Binding Document}" Width="100"/>
+                                            <GridViewColumn Header="Дата нарождення" DisplayMemberBinding="{Binding Date}" Width="100"/>
+                                            <GridViewColumn Header="Місто" DisplayMemberBinding="{Binding Region}" Width="100"/>
+                                            <GridViewColumn Header="Загран. паспорт" DisplayMemberBinding="{Binding Pasport}" Width="100"/>
+                                            <GridViewColumn Header="Телефон" DisplayMemberBinding="{Binding Phone}" Width="100"/>
+                                            <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="100"/>
+                                            <GridViewColumn Header="VIP" DisplayMemberBinding="{Binding Vip}" Width="100"/>
+                                            <GridViewColumn Header="Вік" DisplayMemberBinding="{Binding Age}" Width="100"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </TabItem.Content>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Гиды" x:Name="GuidesGrid" Visibility="Collapsed">
+                <Grid >
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="5">
+                        <TextBlock Text="Пошук:" VerticalAlignment="Center" Margin="5"/>
+                        <TextBox x:Name="SearchGuideTextBox" TextChanged="SearchGuideTextBox_TextChanged" Margin="5" HorizontalAlignment="Right" Width="150"/>
+                        <Button Content="Фільтри" Click="FiltersGuidesButton_Click" Margin="5" HorizontalAlignment="Right"/>
+                        <Button Content="Додати" Click="AddGuideButton_Click" Margin="5"/>
+                        <Button Content="Редагувати" Click="EditGuideButton_Click" Margin="5"/>
+                        <Button x:Name="DelGuideButton" Content="Видалити" Click="DelGuideButton_Click" Margin="5"/>
+                        <Button x:Name="ClearFiltersGuideButton" Content="Clear Filters" Click="ClearFiltersGuideButton_Click" />
+                    </DockPanel>
+                    
+                    <TabControl Grid.Row="1">
+                        <TabItem Header="Усі">
+                            <TabItem.Content>
+                                <ListView x:Name="guideList" ItemsSource="{Binding Guides}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Прізвище" DisplayMemberBinding="{Binding G_LastName}" Width="100"/>
+                                            <GridViewColumn Header="Ім'я" DisplayMemberBinding="{Binding G_FirstName}" Width="100"/>
+                                            <GridViewColumn Header="По-батькові" DisplayMemberBinding="{Binding G_Patronymic}" Width="100"/>
+                                            <GridViewColumn Header="Паспорт" DisplayMemberBinding="{Binding G_Document}" Width="100"/>
+                                            <GridViewColumn Header="Дата нарождення" DisplayMemberBinding="{Binding G_Date}" Width="100"/>
+                                            <GridViewColumn Header="Регіон" DisplayMemberBinding="{Binding G_Region}" Width="100"/>
+                                            <GridViewColumn Header="Паспорт" DisplayMemberBinding="{Binding G_Pasport}" Width="100"/>
+                                            <GridViewColumn Header="Телефон" DisplayMemberBinding="{Binding G_Phone}" Width="100"/>
+                                            <GridViewColumn Header="Email" DisplayMemberBinding="{Binding G_Email}" Width="100"/>
+                                            <GridViewColumn Header="Вік" DisplayMemberBinding="{Binding G_Age}" Width="100"/>
+                                            <GridViewColumn Header="Поїздки" DisplayMemberBinding="{Binding G_All_Drives}" Width="100"/>
+                                            <GridViewColumn Header="Кількість поїздок" DisplayMemberBinding="{Binding G_Count_Drives}" Width="100"/>
+                                            <GridViewColumn Header="Дата прийняття на роботу" DisplayMemberBinding="{Binding G_Date_Work}" Width="100"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </TabItem.Content>
+                        </TabItem>
+                        
+                    </TabControl>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Trips">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="5">
+                        <TextBlock Text="Пошук:" VerticalAlignment="Center" Margin="5"/>
+                        <TextBox x:Name="SearchTripsTextBox" TextChanged="SearchTripsTextBox_TextChanged" Margin="5" HorizontalAlignment="Right" Width="150"/>
+                        <Button Content="Фільтри" Click="FiltersTripsButton_Click" Margin="5" HorizontalAlignment="Right"/>
+                        <Button x:Name="AddTrip" Content="Додати" Click="AddTripsButton_Click" Margin="5"/>
+                        <Button x:Name="EditTrip" Content="Редагувати" Click="EditTripsButton_Click" Margin="5"/>
+                        <Button x:Name="DelTrip" Content="Видалити" Click="AddTripsButton_Click" Margin="5"/>
+                        <Button x:Name="ClearFiltersTripButton" Content="Clear Filters" Click="ClearFiltersTripButton_Click" />
+                    </DockPanel>
+                    
+                    <!-- Current Trips Tab -->
+                    <TabControl Grid.Row="1" x:Name="Trips" Visibility="Collapsed">
+                        <TabItem Header="Поездки">
+                            <TabItem.Resources>
+                                <local:ClientListToLastNamesConverter x:Key="ClientListToLastNamesConverter" />
+                            </TabItem.Resources>
+                            <TabItem.Content>
+                                <ListView ItemsSource="{Binding Trip}" x:Name="tripList">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Маршрут" DisplayMemberBinding="{Binding Route}" Width="100"/>
+                                            <GridViewColumn Header="Ціна" DisplayMemberBinding="{Binding Price}" Width="100"/>
+                                            <GridViewColumn Header="Дата початку" DisplayMemberBinding="{Binding StartDate}" Width="100"/>
+                                            <GridViewColumn Header="Дата кінця" DisplayMemberBinding="{Binding EndDate}" Width="100"/>
+                                            <GridViewColumn Header="Опис" DisplayMemberBinding="{Binding Description}" Width="100"/>
+                                            <GridViewColumn Header="Готель" DisplayMemberBinding="{Binding Hotel}" Width="100"/>
+
+                                            <GridViewColumn Header="Гід">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding GuideID, Converter={StaticResource GuideIdToLastNameConverter}}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <GridViewColumn Header="Клієнти">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock>
+                                                            <TextBlock.Text>
+                                                                <MultiBinding Converter="{StaticResource ClientListToLastNamesConverter}">
+                                                                    <Binding Path="DataContext.Client" RelativeSource="{RelativeSource AncestorType=Window}" />
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </TabItem.Content>
+                        </TabItem>
+                    </TabControl>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
